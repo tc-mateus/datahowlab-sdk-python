@@ -722,7 +722,7 @@ def groupcode_is_numeric(code: str):
     return code in [
         "Flows",
         "FeedConc",
-        "Inducer",
+        "Inducers",
         "W",
         "X",
     ]
@@ -735,4 +735,4 @@ def groupcode_is_output(code: str):
 
 def groupcode_is_timedependent(code: str):
     """Check if the group is time dependent for recipe only"""
-    return code in ["Flows", "W", "Inducer"]
+    return code in ["Flows", "W", "Inducers"]
