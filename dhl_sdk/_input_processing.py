@@ -29,47 +29,39 @@ class Group(Protocol):
     # pylint: disable=missing-class-docstring
     # pylint: disable=missing-function-docstring
     @property
-    def code(self) -> str:
-        ...
+    def code(self) -> str: ...
 
 
 class Variable(Protocol):
     # pylint: disable=missing-class-docstring
     # pylint: disable=missing-function-docstring
     @property
-    def group(self) -> Group:
-        ...
+    def group(self) -> Group: ...
 
     @property
-    def code(self) -> str:
-        ...
+    def code(self) -> str: ...
 
     @property
-    def id(self) -> str:
-        ...
+    def id(self) -> str: ...
 
-    def matches_key(self, key: str) -> bool:
-        ...
+    def matches_key(self, key: str) -> bool: ...
 
 
 class Dataset(Protocol):
     # pylint: disable=missing-class-docstring
     # pylint: disable=missing-function-docstring
     @property
-    def variables(self) -> list[Variable]:
-        ...
+    def variables(self) -> list[Variable]: ...
 
 
 class Model(Protocol):
     # pylint: disable=missing-class-docstring
     # pylint: disable=missing-function-docstring
     @property
-    def dataset(self) -> Dataset:
-        ...
+    def dataset(self) -> Dataset: ...
 
     @property
-    def model_variables(self) -> list[Variable]:
-        ...
+    def model_variables(self) -> list[Variable]: ...
 
 
 # Input Preprocessors (Validation and Formatting)
@@ -386,7 +378,8 @@ class CultivationHistoricalPreprocessor(Preprocessor):
             list of dictionaries with instances for prediction
         """
 
-        input_variables = self.model.model_variables
+        input_variables = self.model.dataset.variables
+        model_variables = self.model.model_variables
 
         instances = [[]]
 
@@ -394,7 +387,7 @@ class CultivationHistoricalPreprocessor(Preprocessor):
 
         # order the dict according to Variables and insert timestamps and steps
         for key, value in self.inputs.copy().items():
-            for variable in input_variables:
+            for variable in model_variables:
                 if variable.matches_key(key):
                     formatted_inputs[variable.id] = {}
                     formatted_inputs[variable.id]["values"] = value
